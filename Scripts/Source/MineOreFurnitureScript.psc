@@ -35,6 +35,12 @@ faction property CurrentFollowerFaction auto
 {Used to handle player followers using the furniture object}
 
 globalvariable property MiningSkillIncrement auto
+
+;; LOAF
+
+Actor Property PlayerRef auto 
+Perk Property _LOAF_Perk auto 
+
 ;===================================================================
 ;;EVENT BLOCK
 ;===================================================================
@@ -144,8 +150,12 @@ state reseting
 	event onBeginState()
 ; 		debug.Trace(self + " is in state reseting")
 		if playerIsLeavingFurniture
+			PlayerRef.AddPerk(_LOAF_Perk)
 			playerIsLeavingFurniture = false
 			Game.GetPlayer().PlayIdle(PickaxeExit)
+			Utility.Wait(5)
+			PlayerRef.RemovePerk(_LOAF_Perk)
+			gotoState("normal")
 		else
 			UnregisterForEvents()
 		endif
